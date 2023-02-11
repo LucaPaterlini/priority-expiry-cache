@@ -1,16 +1,47 @@
-// This version its just to task we can publish a repo on crates.io
-// the v 0.2.0 will contain the first version of the code
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
+extern crate ahash;
+use ahash::AHashMap;
+
+/// 0.1.1 This code is there just to expose the interface.
+/// the implementation is not complete.
+
+
+pub struct Item{
+    pub value: String,
+    pub expiry: u32,
+    pub priority: u32,
+    next_expiry: Option<Box<Item>>,
+    next_priority: Option<Box<Item>>,
+    prev_expiry: Option<Box<Item>>,
+    prev_priority: Option<Box<Item>>,
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+// TODO: check existing implemenation for binary tree and doubly linked list
+// TODO: if they can be fit for purpose.
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+
+pub struct Cache(AHashMap<String, Item>);
+
+impl Cache {
+    pub fn new(capacity:usize) ->Self{
+        assert!(capacity>0);
+        Self(AHashMap::with_capacity(capacity))
+    }
+    pub fn get(&self, key: &str) -> Option<&Item> {
+        self.0.get(key)
+    }
+    pub fn set(&mut self, key: &str, value: &str, expiry:u32, priority:u32) {
+        self.0.insert(key.to_string(), Item{
+            value: value.to_string(),
+            expiry,
+            priority,
+            next_expiry: None,
+            next_priority: None,
+            prev_expiry: None,
+            prev_priority: None,
+        });
+    }
+    pub fn evict(&mut self) {
+        println!("evict");
     }
 }
+
