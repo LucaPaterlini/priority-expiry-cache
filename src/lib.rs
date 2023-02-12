@@ -15,13 +15,11 @@ pub struct Item{
     prev_priority: Option<Box<Item>>,
 }
 
-// TODO: check existing implemenation for binary tree and doubly linked list
+// TODO: check existing implementation for binary tree and doubly linked list
 // TODO: if they can be fit for purpose.
-// TODO: add the primitives in the dastrascructures module
+// TODO: add the primitives in the data structures module
 
-pub struct Cache {
-    map: AHashMap<String, Item>
-};
+pub struct Cache(AHashMap<String, Item>);
 
 impl Cache {
     pub fn new(capacity:usize) ->Self{
