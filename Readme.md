@@ -8,6 +8,7 @@
 - [ ] Add a full set of tests
 - [ ] add the primitives to the module with the datastructures needed for the solution
 - [ ] add the complete solution
+- [ ] add github actions ci 
 - [ ] check the docstrings and the documentation
 - [ ] add the benchmark
 - [ ] update the readme with the benchmark results
