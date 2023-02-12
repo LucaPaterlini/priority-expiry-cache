@@ -1,5 +1,18 @@
 # Priority-expiry-cache
 
+## TODOLIST
+
+- [x] Set up the repo and reserve the name on crates.io
+- [x] Add the first draft of the readme with the solution explanation
+- [ ] Proofread the Readme
+- [ ] Add a full set of tests
+- [ ] add the primitives to the module with the datastructures needed for the solution
+- [ ] add the complete solution
+- [ ] check the docstrings and the documentation
+- [ ] add the benchmark
+- [ ] update the readme with the benchmark results
+
+
 ## Intro
 
 This problem is one of the famous questions asked in companies interviews,
@@ -15,7 +28,7 @@ and spare good candidates from a rejection for a problem which
 is more based on intuition than on algo and data structures skills.
 
 For all of those interested in just having a good priority, expiry cache in place 
-feel free to look at the documentation of this crate send prs 
+feel free to look at the [official crate](https://crates.io/crates/priority-expiry-cache) of this crate send prs 
 and tickets at the official github repo.
 
 All code is released under and informal
