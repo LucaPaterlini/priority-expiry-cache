@@ -39,6 +39,12 @@ The rules by which the cache operates is are follows:
 Untold rules:
  - All of those operations should be O(1) time and space complexity.
 
+## 1 Min Solution summary
+
+It's an extension of the [LRU Cache Wikipedia](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU))
+as explained in this implementation [LRU Cache Interview Cake](https://www.interviewcake.com/concept/java/lru-cache)
+the difference it's the addition of a binary tree to keep track of the min and max priority and expiry.
+
 ## Solution
 
 Assumptions:
