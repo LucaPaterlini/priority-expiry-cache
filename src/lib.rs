@@ -28,6 +28,13 @@ impl <K:Clone+Hash+Ord,
     E: Clone + Ord + Eq,
     P: Clone + Ord
 >PECache<K,V,E,P> {
+    /// Creates a new PE Cache.
+    ///
+    /// # Examples
+    /// ```
+    /// use priority_expiry_cache::PECache;
+    /// let mut new_cache:PECache<String,String,u32,u32>= PECache::new();
+    /// ```
     pub fn new() -> Self {
         Self {
             access_map: Default::default(),
@@ -35,6 +42,19 @@ impl <K:Clone+Hash+Ord,
             evict_priority: Default::default(),
         }
     }
+
+    /// Add a new item to the cache or override the existing one if present in O(1) time.
+    ///
+    /// # Examples
+    /// ```
+    /// use priority_expiry_cache::PECache;
+    /// let mut new_cache:PECache<String,String,u32,u32>= PECache::new();
+    ///     let (key, value, expiry, priority) = (
+    ///         String::from("key"),
+    ///         String::from("value"), 1, 1);
+    /// new_cache.set(key.clone(),value.clone(), expiry, priority);
+    ///
+    /// ```
     pub fn set(&mut self, key: K, value: V, expiry: E, priority: P) {
         // addition to the btree for time
         let key_expiry: ItemExpiry<E, K> = ItemExpiry {
@@ -50,6 +70,16 @@ impl <K:Clone+Hash+Ord,
         self.access_map.insert(key, page);
         return;
     }
+    /// Gat the value associated with the key if present or None if not in O(1) time.
+    ///
+    /// # Examples
+    /// ```
+    /// use priority_expiry_cache::PECache;
+    /// let mut new_cache:PECache<String,String,u32,u32>= PECache::new();
+    ///
+    /// // the get operation
+    /// let extracted_value = new_cache.get("key".to_string());
+    /// ```
     pub fn get(&mut self, key: K) -> Option<V> {
         if let Some(page) = self.access_map.get(&key) {
             // change the order in the last recently data structure
@@ -58,6 +88,22 @@ impl <K:Clone+Hash+Ord,
         }
         None
     }
+    /// Evict 1 element following this policy if at least one element is present in O(1).
+    ///
+    /// Policy:
+    /// - If an expired item is available. Remove it. If multiple items have the same expiry, removing any one suffices.
+    /// - If condition #1 can’t be satisfied, remove an item with the least priority.
+    /// - If more than one item satisfies condition #2, remove the least recently used one.
+    /// - Multiple items can have the same priority and expiry.
+    ///
+    /// # Examples
+    /// ```
+    /// use priority_expiry_cache::PECache;
+    /// let mut new_cache:PECache<String,String,u32,u32>= PECache::new();
+    ///
+    ///
+    /// let extracted_value = new_cache.evict(10);
+    /// ```
     pub fn evict(&mut self, barrier: E) {
         if self.access_map.len() == 0 {
             return;
@@ -82,5 +128,19 @@ impl <K:Clone+Hash+Ord,
             self.evict_priority.remove(&page.priority);
         }
         return
+    }
+    /// Return the Length of Cache items in O(1).
+    ///
+    /// # Examples
+    /// ```
+    /// use priority_expiry_cache::PECache;
+    /// let mut new_cache:PECache<String,String,u32,u32>= PECache::new();
+    ///
+    ///
+    /// let cache_n_size = new_cache.len();
+    /// ```
+
+    pub fn len(&self)->usize{
+        self.access_map.len()
     }
 }

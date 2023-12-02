@@ -23,8 +23,26 @@ fn get_and_set_single_element(){
         String::from("value"), 1, 1);
     let mut cache = PECache::new();
     cache.set(key.clone(),value.clone(), expiry, priority);
-    assert_eq!(value,cache.get(key).unwrap().to_string());
+    assert_eq!(value,cache.get(key).unwrap());
 }
+
+#[test]
+fn set_2_items_same_key_override(){
+    let (key, value, expiry, priority) = (
+        String::from("key"),
+        String::from("value"), 1, 1);
+
+    let (key1, value1, expiry1, priority1) = (
+        String::from("key"),
+        String::from("hello"), 2, 2);
+    let mut cache = PECache::new();
+    cache.set(key.clone(),value.clone(), expiry, priority);
+    cache.set(key1.clone(),value1.clone(), expiry1, priority1);
+    assert_eq!(value1,cache.get(key).unwrap());
+    assert_eq!(1,cache.len());
+
+}
+
 
 #[test]
 fn get_and_set_evict_single_element(){
@@ -44,7 +62,7 @@ fn get_and_set_not_evict_high_barrier_single_element(){
         String::from("value"), 1, 1);
     let mut cache = PECache::new();
     cache.set(key.clone(),value.clone(), expiry, priority);
-    assert_eq!(value,cache.get(key).unwrap().to_string());
+    assert_eq!(value,cache.get(key).unwrap());
 }
 
 #[test]
@@ -59,12 +77,12 @@ fn insert_2_elements_evict_get_different_time(){
     cache.set(key.clone(),value.clone(), expiry, priority);
     cache.set(key1.clone(),value1.clone(), expiry1, priority1);
     // check before
-    assert_eq!(value,cache.get(key.clone()).unwrap().to_string());
-    assert_eq!(value1,cache.get(key1.clone()).unwrap().to_string());
+    assert_eq!(value,cache.get(key.clone()).unwrap());
+    assert_eq!(value1,cache.get(key1.clone()).unwrap());
 
     cache.evict(1);
     // check after
-    assert_eq!(value1,cache.get(key1.clone()).unwrap().to_string());
+    assert_eq!(value1,cache.get(key1.clone()).unwrap());
     assert_eq!(None,cache.get(key.clone()));
     // make sure empty
     cache.evict(3);
@@ -87,11 +105,11 @@ fn insert_2_elements_evict_by_priority(){
     cache.set(key.clone(),value.clone(), expiry, priority);
     cache.set(key1.clone(),value1.clone(), expiry1, priority1);
     // check before
-    assert_eq!(value,cache.get(key.clone()).unwrap().to_string());
-    assert_eq!(value1,cache.get(key1.clone()).unwrap().to_string());
+    assert_eq!(value,cache.get(key.clone()).unwrap());
+    assert_eq!(value1,cache.get(key1.clone()).unwrap());
     cache.evict(2);
     // check after
-    assert_eq!(value.clone(),cache.get(key.clone()).unwrap().to_string());
+    assert_eq!(value.clone(),cache.get(key.clone()).unwrap());
     assert_eq!(None,cache.get(key1.clone()));
     // make sure empty
     cache.evict(0);
@@ -121,9 +139,9 @@ fn eviction_by_lru(){
     cache.get(key.clone());
     cache.evict(5);
     // deleted in the middle
-    assert_eq!(value,cache.get(key.clone()).unwrap().to_string());
+    assert_eq!(value,cache.get(key.clone()).unwrap());
     assert_eq!(None,cache.get(key1.clone()));
-    assert_eq!(value2,cache.get(key2.clone()).unwrap().to_string());
+    assert_eq!(value2,cache.get(key2.clone()).unwrap());
 }
 
 #[test]
