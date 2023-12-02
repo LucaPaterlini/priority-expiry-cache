@@ -66,7 +66,7 @@ fn insert_2_elements_evict_get_different_time(){
 
 
 #[test]
-fn insert_2_elements_evict_get_same_time(){
+fn insert_2_elements_evict_by_priority(){
     let (key, value, expiry, priority) = (
         String::from("z_key"),
         String::from("z_value"), 0, 0);
@@ -79,7 +79,7 @@ fn insert_2_elements_evict_get_same_time(){
     // check before
     assert_eq!(value,cache.get(key.clone()).unwrap().to_string());
     assert_eq!(value1,cache.get(key1.clone()).unwrap().to_string());
-    cache.evict(0);
+    cache.evict(2);
     // check after
     assert_eq!(value.clone(),cache.get(key.clone()).unwrap().to_string());
     assert_eq!(None,cache.get(key1.clone()));
@@ -89,4 +89,26 @@ fn insert_2_elements_evict_get_same_time(){
     assert_eq!(None,cache.get(key1.clone()));
     // evict on empty
     cache.evict(0);
+}
+
+#[test]
+fn eviction_by_lru(){
+    let (key, value, expiry, priority) = (
+        String::from("z_key"),
+        String::from("z_value"), 10, 2);
+    let (key1, value1, expiry1, priority1) = (
+        String::from("key1"),
+        String::from("value1"), 12, 2);
+
+    let mut cache = Cache::new();
+    cache.set(key.clone(),value.clone(), expiry, priority);
+    cache.set(key1.clone(),value1.clone(), expiry1, priority1);
+    // check before
+    assert_eq!(value,cache.get(key.clone()).unwrap().to_string());
+    assert_eq!(value1,cache.get(key1.clone()).unwrap().to_string());
+    cache.evict(11);
+    // first deleted
+    assert_eq!(None,cache.get(key.clone()));
+    assert_eq!(value1,cache.get(key1.clone()).unwrap().to_string());
+
 }
