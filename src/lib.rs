@@ -19,7 +19,7 @@ struct ItemExpiry {
 pub struct Cache {
     access_map: HashMap<String, Page>,
     evict_expiry: BTreeSet<ItemExpiry>,
-    evict_priority: BTreeMap<u32, LruCache<String, bool>>,
+    pub evict_priority: BTreeMap<u32, LruCache<String, bool>>,
 }
 
 impl Cache {

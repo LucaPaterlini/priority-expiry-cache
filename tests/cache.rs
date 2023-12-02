@@ -1,9 +1,18 @@
 extern crate priority_expiry_cache;
 use priority_expiry_cache::Cache;
-
 #[test]
 fn new_cache(){
     let _ = Cache::new();
+}
+
+#[test]
+fn get_missing_key(){
+    assert_eq!(None,Cache::new().get("".to_string()));
+}
+
+#[test]
+fn evict_from_empty_cache(){
+    Cache::new().evict(0);
 }
 
 #[test]
@@ -98,17 +107,20 @@ fn eviction_by_lru(){
         String::from("z_value"), 10, 2);
     let (key1, value1, expiry1, priority1) = (
         String::from("key1"),
-        String::from("value1"), 12, 2);
+        String::from("value1"), 11, 2);
+    let (key2, value2, expiry2, priority2) = (
+        String::from("key2"),
+        String::from("value2"), 12, 2);
 
     let mut cache = Cache::new();
     cache.set(key.clone(),value.clone(), expiry, priority);
     cache.set(key1.clone(),value1.clone(), expiry1, priority1);
-    // check before
-    assert_eq!(value,cache.get(key.clone()).unwrap().to_string());
-    assert_eq!(value1,cache.get(key1.clone()).unwrap().to_string());
-    cache.evict(11);
-    // first deleted
-    assert_eq!(None,cache.get(key.clone()));
-    assert_eq!(value1,cache.get(key1.clone()).unwrap().to_string());
+    cache.set(key2.clone(),value2.clone(), expiry2, priority2);
 
+    cache.get(key.clone());
+    cache.evict(5);
+    // deleted in the middle
+    assert_eq!(value,cache.get(key.clone()).unwrap().to_string());
+    assert_eq!(None,cache.get(key1.clone()));
+    assert_eq!(value2,cache.get(key2.clone()).unwrap().to_string());
 }
