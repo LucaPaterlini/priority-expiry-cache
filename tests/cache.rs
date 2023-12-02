@@ -1,18 +1,19 @@
 extern crate priority_expiry_cache;
+
 use priority_expiry_cache::PECache;
 #[test]
 fn new_cache(){
-    let _ = PECache::new();
+    let _: PECache<String, String, u32, u32> = PECache::new();
 }
 
 #[test]
 fn get_missing_key(){
-    assert_eq!(None, PECache::new().get("".to_string()));
+    assert_eq!(None::<String>,PECache::<String, String, u32, u32>::new().get("".to_string()));
 }
 
 #[test]
 fn evict_from_empty_cache(){
-    PECache::new().evict(0);
+    PECache::<String,String, u32, u32>::new().evict(0);
 }
 
 #[test]
@@ -123,4 +124,22 @@ fn eviction_by_lru(){
     assert_eq!(value,cache.get(key.clone()).unwrap().to_string());
     assert_eq!(None,cache.get(key1.clone()));
     assert_eq!(value2,cache.get(key2.clone()).unwrap().to_string());
+}
+
+#[test]
+fn get_and_set_single_element_generic(){
+    #[derive(Clone,Hash,Ord,Eq,PartialOrd, PartialEq)]
+    struct KeyGeneric(u16, String);
+    #[derive(Clone,Hash,Ord,Eq,PartialOrd, PartialEq, Debug)]
+    struct ValueGeneric(u16, String,u32);
+
+    let (key, value, expiry, priority) = (
+        KeyGeneric{ 0: 10, 1: "a string".to_string()},
+        ValueGeneric{0:2,1:"hello".to_string(),2:2},
+        1,
+        0
+    );
+    let mut cache = PECache::new();
+    cache.set(key.clone(),value.clone(), expiry, priority);
+    assert_eq!(value,cache.get(key).unwrap());
 }
