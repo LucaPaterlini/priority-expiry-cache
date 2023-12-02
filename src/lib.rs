@@ -16,13 +16,13 @@ struct ItemExpiry {
     key: String,
 }
 
-pub struct Cache {
+pub struct PECache {
     access_map: HashMap<String, Page>,
     evict_expiry: BTreeSet<ItemExpiry>,
-    pub evict_priority: BTreeMap<u32, LruCache<String, bool>>,
+    evict_priority: BTreeMap<u32, LruCache<String, bool>>,
 }
 
-impl Cache {
+impl PECache {
     pub fn new() -> Self {
         Self {
             access_map: Default::default(),
