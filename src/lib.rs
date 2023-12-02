@@ -49,10 +49,10 @@ impl <K:Clone+Hash+Ord,
     /// ```
     /// use priority_expiry_cache::PECache;
     /// let mut new_cache:PECache<String,String,u32,u32>= PECache::new();
-    ///     let (key, value, expiry, priority) = (
+    ///     let (key, value, priority, expiry) = (
     ///         String::from("key"),
     ///         String::from("value"), 1, 1);
-    /// new_cache.set(key.clone(),value.clone(), expiry, priority);
+    /// new_cache.set(key.clone(),value.clone(), priority, expiry);
     ///
     /// ```
     pub fn set(&mut self, key: K, value: V,priority: P, expiry: E) {
