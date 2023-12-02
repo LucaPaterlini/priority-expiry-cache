@@ -4,11 +4,11 @@ use std::collections::{BTreeMap, BTreeSet,HashMap};
 use std::hash::Hash;
 use lru::LruCache;
 
-struct Page<K,V,E,P> {
+struct Page<K,V,P,E> {
     key: K,
     value: V,
-    expiry: E,
     priority: P,
+    expiry: E,
 }
 
 #[derive(Ord,PartialOrd, PartialEq, Eq)]
@@ -17,17 +17,17 @@ struct ItemExpiry<E,K> {
     key: K,
 }
 
-pub struct PECache<K,V,E,P> {
-    access_map: HashMap<K, Page<K,V,E,P>>,
+pub struct PECache<K,V,P,E> {
+    access_map: HashMap<K, Page<K,V,P,E>>,
     evict_expiry: BTreeSet<ItemExpiry<E,K>>,
     evict_priority: BTreeMap<P, LruCache<K, bool>>,
 }
 
 impl <K:Clone+Hash+Ord,
     V: Clone+Eq+Hash+PartialEq,
+    P: Clone + Ord,
     E: Clone + Ord + Eq,
-    P: Clone + Ord
->PECache<K,V,E,P> {
+>PECache<K,V,P,E> {
     /// Creates a new PE Cache.
     ///
     /// # Examples
@@ -55,7 +55,7 @@ impl <K:Clone+Hash+Ord,
     /// new_cache.set(key.clone(),value.clone(), expiry, priority);
     ///
     /// ```
-    pub fn set(&mut self, key: K, value: V, expiry: E, priority: P) {
+    pub fn set(&mut self, key: K, value: V,priority: P, expiry: E) {
         // addition to the btree for time
         let key_expiry: ItemExpiry<E, K> = ItemExpiry {
             expiry: expiry.clone(),

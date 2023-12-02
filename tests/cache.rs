@@ -67,15 +67,15 @@ fn get_and_set_not_evict_high_barrier_single_element(){
 
 #[test]
 fn insert_2_elements_evict_get_different_time(){
-    let (key, value, expiry, priority) = (
+    let (key, value, priority, expiry) = (
         String::from("key"),
-        String::from("value"), 0, 1);
-    let (key1, value1, expiry1, priority1) = (
+        String::from("value"), 1,0);
+    let (key1, value1, priority1,expiry1) = (
         String::from("key1"),
         String::from("value1"), 2, 2);
     let mut cache = PECache::new();
-    cache.set(key.clone(),value.clone(), expiry, priority);
-    cache.set(key1.clone(),value1.clone(), expiry1, priority1);
+    cache.set(key.clone(),value.clone(), priority, expiry);
+    cache.set(key1.clone(),value1.clone(), priority1, expiry1);
     // check before
     assert_eq!(value,cache.get(key.clone()).unwrap());
     assert_eq!(value1,cache.get(key1.clone()).unwrap());
@@ -95,15 +95,15 @@ fn insert_2_elements_evict_get_different_time(){
 
 #[test]
 fn insert_2_elements_evict_by_priority(){
-    let (key, value, expiry, priority) = (
+    let (key, value,  priority,expiry) = (
         String::from("z_key"),
         String::from("z_value"), 0, 0);
-    let (key1, value1, expiry1, priority1) = (
+    let (key1, value1,  priority1,expiry1) = (
         String::from("key1"),
         String::from("value1"), 0, 0);
     let mut cache = PECache::new();
-    cache.set(key.clone(),value.clone(), expiry, priority);
-    cache.set(key1.clone(),value1.clone(), expiry1, priority1);
+    cache.set(key.clone(),value.clone(), priority,expiry);
+    cache.set(key1.clone(),value1.clone(), priority1,expiry1);
     // check before
     assert_eq!(value,cache.get(key.clone()).unwrap());
     assert_eq!(value1,cache.get(key1.clone()).unwrap());
@@ -121,13 +121,13 @@ fn insert_2_elements_evict_by_priority(){
 
 #[test]
 fn eviction_by_lru(){
-    let (key, value, expiry, priority) = (
+    let (key, value,priority, expiry) = (
         String::from("z_key"),
         String::from("z_value"), 10, 2);
-    let (key1, value1, expiry1, priority1) = (
+    let (key1, value1, priority1,expiry1) = (
         String::from("key1"),
         String::from("value1"), 11, 2);
-    let (key2, value2, expiry2, priority2) = (
+    let (key2, value2,priority2, expiry2) = (
         String::from("key2"),
         String::from("value2"), 12, 2);
 

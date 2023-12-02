@@ -1,6 +1,6 @@
 [package]
 name = "priority-expiry-cache"
-version = "0.2.0"
+version = "0.2.1"
 categories = ["data-structures"]
 authors = ["Luca Paterlini <paterlini.luca@gmail.com>"]
 description = """A cache that evicts items based on their priority and expiry time (LRU + TTL)
