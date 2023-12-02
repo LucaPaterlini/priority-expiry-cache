@@ -1,4 +1,4 @@
-# Priority-expiry-cache
+# Priority-expiry-cache [![codecov](https://codecov.io/gh/LucaPaterlini/priority-expiry-cache/graph/badge.svg?token=GIJFVWT7NC)](https://codecov.io/gh/LucaPaterlini/priority-expiry-cache)
 
 ## Intro
 
