@@ -1,19 +1,5 @@
 # Priority-expiry-cache
 
-## TODOLIST
-
-- [x] Set up the repo and reserve the name on crates.io
-- [x] Add the first draft of the readme with the solution explanation
-- [ ] Proofread the Readme
-- [ ] Add a full set of tests
-- [ ] add the primitives to the module with the datastructures needed for the solution
-- [ ] add the complete solution
-- [ ] add github actions ci 
-- [ ] check the docstrings and the documentation
-- [ ] add the benchmark
-- [ ] update the readme with the benchmark results
-
-
 ## Intro
 
 This problem is one of the famous questions asked in companies interviews,
@@ -113,7 +99,5 @@ The complexity is O(1)x2 for the find of the min expiry time and the min in prio
 to remove the tail of the doubly linked list = O(1) time and space.
 
 
-## Extras
-
-As suggested here [Rust Performance Book](https://nnethercote.github.io/perf-book/) 
-we have used ahash to reduce the hashing time.
+## Credits
+- [Giacomo Sorbi](https://www.linkedin.com/in/giacomosorbi/) for proofreading
