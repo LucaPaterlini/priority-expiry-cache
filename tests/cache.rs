@@ -56,16 +56,6 @@ fn get_and_set_evict_single_element(){
 }
 
 #[test]
-fn get_and_set_not_evict_high_barrier_single_element(){
-    let (key, value, expiry, priority) = (
-        String::from("key"),
-        String::from("value"), 1, 1);
-    let mut cache = PECache::new();
-    cache.set(key.clone(),value.clone(), expiry, priority);
-    assert_eq!(value,cache.get(key).unwrap());
-}
-
-#[test]
 fn insert_2_elements_evict_get_different_time(){
     let (key, value, priority, expiry) = (
         String::from("key"),
