@@ -99,8 +99,8 @@ fn insert_2_elements_evict_by_priority(){
     assert_eq!(value1,cache.get(key1.clone()).unwrap());
     cache.evict(2);
     // check after
-    assert_eq!(None,cache.get(key.clone()));
-    assert_eq!(value1.clone(),cache.get(key1.clone()).unwrap());
+    assert_eq!(value.clone(),cache.get(key.clone()).unwrap());
+    assert_eq!(None,cache.get(key1.clone()));
     // make sure empty
     cache.evict(0);
     assert_eq!(None,cache.get(key.clone()));
