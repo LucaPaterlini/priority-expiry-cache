@@ -87,10 +87,10 @@ fn insert_2_elements_evict_get_different_time(){
 fn insert_2_elements_evict_by_priority(){
     let (key, value,  priority,expiry) = (
         String::from("z_key"),
-        String::from("z_value"), 0, 0);
+        String::from("z_value"), 2, 10);
     let (key1, value1,  priority1,expiry1) = (
         String::from("key1"),
-        String::from("value1"), 0, 0);
+        String::from("value1"), 1, 0);
     let mut cache = PECache::new();
     cache.set(key.clone(),value.clone(), priority,expiry);
     cache.set(key1.clone(),value1.clone(), priority1,expiry1);
@@ -99,8 +99,8 @@ fn insert_2_elements_evict_by_priority(){
     assert_eq!(value1,cache.get(key1.clone()).unwrap());
     cache.evict(2);
     // check after
-    assert_eq!(value.clone(),cache.get(key.clone()).unwrap());
-    assert_eq!(None,cache.get(key1.clone()));
+    assert_eq!(None,cache.get(key.clone()));
+    assert_eq!(value1.clone(),cache.get(key1.clone()).unwrap());
     // make sure empty
     cache.evict(0);
     assert_eq!(None,cache.get(key.clone()));
