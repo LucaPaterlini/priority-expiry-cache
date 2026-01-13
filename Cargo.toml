@@ -9,4 +9,4 @@ license = "MIT/Apache-2.0"
 homepage = "https://github.com/LucaPaterlini/priority-expiry-cache"
 
 [dependencies]
-lru = "0.12.1"
+lru = "0.16.3"
